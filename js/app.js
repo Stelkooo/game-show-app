@@ -1,6 +1,8 @@
 const keyboard = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const btns = document.querySelectorAll('.keyrow button');
+const hearts = document.querySelectorAll('.tries img');
+let letterFound = '';
 let missed = 0;
 
 const resetButton = document.getElementsByClassName('btn__reset')[0];
@@ -65,7 +67,11 @@ keyboard.addEventListener('click', (e) => {
     if (btn.tagName === 'BUTTON') {
         btn.className = 'chosen';
         btn.disabled = 'true';
-        checkLetter(btn);
+        letterFound = checkLetter(btn);
+        if (letterFound === null) {
+            missed++;
+            hearts[missed - 1].src = 'images/lostHeart.png'
+        }
     }
 })
 
@@ -76,7 +82,11 @@ document.addEventListener('keyup', (e) => {
         if (btn.innerHTML === keyPressed) {
             btn.className = 'chosen';
             btn.disabled = 'true';
-            checkLetter(btn);
+            letterFound = checkLetter(btn);
+            if (letterFound === null) {
+                missed++;
+                hearts[missed - 1].src = 'images/lostHeart.png'
+            }
         }
     }
 })
