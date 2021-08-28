@@ -26,3 +26,18 @@ function getRandomPhraseAsArray (arr) {
     }
     return characters
 }
+
+const phraseArray = getRandomPhraseAsArray(phrases);
+
+function addPhraseToDisplay(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        const character = arr[i];
+        const listItem = document.createElement("li");
+        const phraseUl = document.querySelector("#phrase ul");
+        if (character !== ' ') {
+            listItem.className = "letter";
+        }
+        listItem.innerHTML = character;
+        phraseUl.appendChild(listItem);
+    }
+}
