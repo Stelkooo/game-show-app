@@ -1,5 +1,6 @@
 const keyboard = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
+const btns = document.querySelectorAll('.keyrow button');
 let missed = 0;
 
 const resetButton = document.getElementsByClassName('btn__reset')[0];
@@ -41,3 +42,41 @@ function addPhraseToDisplay(arr) {
         phraseUl.appendChild(listItem);
     }
 }
+
+addPhraseToDisplay(phraseArray);
+
+function checkLetter(btn) {
+    let letter = '';
+    const letterClass = document.getElementsByClassName('letter');
+    for (let i = 0; i < letterClass.length; i++) {
+        const letterElement = letterClass[i];
+        if (letterElement.innerHTML.toLowerCase() === btn.innerHTML) {
+            letterElement.className += ' show';
+            if (letter === '') {
+                letter += letterElement.innerHTML;
+            }
+        }
+    }
+    return (letter.length === 1 ? letter : null);
+}
+
+keyboard.addEventListener('click', (e) => {
+    const btn = e.target;
+    if (btn.tagName === 'BUTTON') {
+        btn.className = 'chosen';
+        btn.disabled = 'true';
+        checkLetter(btn);
+    }
+})
+
+document.addEventListener('keyup', (e) => {
+    const keyPressed = e.key;
+    for (let i = 0; i < btns.length; i++) {
+        const btn = btns[i];
+        if (btn.innerHTML === keyPressed) {
+            btn.className = 'chosen';
+            btn.disabled = 'true';
+            checkLetter(btn);
+        }
+    }
+})
