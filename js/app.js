@@ -16,3 +16,13 @@ const phrases = [
     "A Piece of Cake",
     "Jumping The Gun",
 ];
+
+function getRandomPhraseAsArray (arr) {
+    const randomNumber = Math.floor(Math.random() * arr.length);
+    let characters = [];
+    const randomPhrase = arr[randomNumber];
+    for (let i = 0; i < randomPhrase.length; i++) {
+        characters.push(randomPhrase[i]);
+    }
+    return characters
+}
