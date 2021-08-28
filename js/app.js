@@ -2,14 +2,17 @@ const keyboard = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const btns = document.querySelectorAll('.keyrow button');
 const hearts = document.querySelectorAll('.tries img');
+const startOverlay = document.getElementById('overlay');
 let letterFound = '';
 let missed = 0;
 
 const resetButton = document.getElementsByClassName('btn__reset')[0];
 
 resetButton.addEventListener('click', (e) => {
-    const startOverlay = document.getElementById('overlay');
     startOverlay.style.display = 'none';
+    missed = 0;
+    const phraseArray = getRandomPhraseAsArray(phrases);
+    addPhraseToDisplay(phraseArray);
 })
 
 const phrases = [
@@ -30,8 +33,6 @@ function getRandomPhraseAsArray (arr) {
     return characters
 }
 
-const phraseArray = getRandomPhraseAsArray(phrases);
-
 function addPhraseToDisplay(arr) {
     for (let i = 0; i < arr.length; i++) {
         const character = arr[i];
@@ -44,8 +45,6 @@ function addPhraseToDisplay(arr) {
         phraseUl.appendChild(listItem);
     }
 }
-
-addPhraseToDisplay(phraseArray);
 
 function checkLetter(btn) {
     let letter = '';
@@ -73,6 +72,7 @@ keyboard.addEventListener('click', (e) => {
             hearts[missed - 1].src = 'images/lostHeart.png'
         }
     }
+    checkWin();
 })
 
 document.addEventListener('keyup', (e) => {
@@ -89,4 +89,17 @@ document.addEventListener('keyup', (e) => {
             }
         }
     }
+    checkWin();
 })
+
+function checkWin() {
+    const letter = document.getElementsByClassName('letter');
+    const show = document.getElementsByClassName('show');
+    if (letter.length === show.length) {
+        startOverlay.style.display = 'flex';
+        console.log("Win");
+    } else if (missed === 4) {
+        startOverlay.style.display = 'flex';
+        console.log("Lost");
+    }
+}
