@@ -8,3 +8,11 @@ resetButton.addEventListener('click', (e) => {
     const startOverlay = document.getElementById('overlay');
     startOverlay.style.display = 'none';
 })
+
+const phrases = [
+    "Down To Earth",
+    "Shot In The Dark",
+    "Go For Broke",
+    "A Piece of Cake",
+    "Jumping The Gun",
+];
