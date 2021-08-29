@@ -4,6 +4,9 @@ const btns = document.querySelectorAll('.keyrow button');
 const hearts = document.querySelectorAll('.tries img');
 const startOverlay = document.getElementById('overlay');
 const phraseUl = document.querySelector("#phrase ul");
+const title = document.querySelector(".title");
+const p = document.createElement('p');
+title.insertAdjacentElement('afterend', p);
 let letterFound = '';
 let missed = 0;
 
@@ -17,13 +20,16 @@ const phrases = [
     "Jumping The Gun",
 ];
 
+let randomPhrase = getRandomPhraseAsArray(phrases);
+
 startBtn.addEventListener('click', (e) => {
     startOverlay.style.display = 'none';
-    addPhraseToDisplay(getRandomPhraseAsArray(phrases));   
+    addPhraseToDisplay(randomPhrase);   
 })
 
 function resetGame() {
     missed = 0;
+    randomPhrase = getRandomPhraseAsArray(phrases);
     while (phraseUl.firstChild) {
         phraseUl.removeChild(phraseUl.firstChild);
     }
@@ -113,12 +119,16 @@ function checkWin() {
     const letter = document.getElementsByClassName('letter');
     const show = document.getElementsByClassName('show');
     if (letter.length === show.length) {
+        startBtn.innerHTML = 'Play Again';
         startOverlay.style.display = 'flex';
         startOverlay.className = 'win';
+        p.innerHTML = "Well done, you guessed the phrase correctly";
         resetGame();
     } else if (missed === 5) {
+        startBtn.innerHTML = 'Try Again';
         startOverlay.style.display = 'flex';
         startOverlay.className = 'lose';
+        p.innerHTML = "Unlucky, you did not guess the phrase";
         resetGame();
     }
 }
