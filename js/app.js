@@ -3,17 +3,11 @@ const phrase = document.getElementById('phrase');
 const btns = document.querySelectorAll('.keyrow button');
 const hearts = document.querySelectorAll('.tries img');
 const startOverlay = document.getElementById('overlay');
+const phraseUl = document.querySelector("#phrase ul");
 let letterFound = '';
 let missed = 0;
 
-const resetButton = document.getElementsByClassName('btn__reset')[0];
-
-resetButton.addEventListener('click', (e) => {
-    startOverlay.style.display = 'none';
-    missed = 0;
-    const phraseArray = getRandomPhraseAsArray(phrases);
-    addPhraseToDisplay(phraseArray);
-})
+const startBtn = document.getElementsByClassName('btn__reset')[0];
 
 const phrases = [
     "Down To Earth",
@@ -23,7 +17,25 @@ const phrases = [
     "Jumping The Gun",
 ];
 
-function getRandomPhraseAsArray (arr) {
+startBtn.addEventListener('click', (e) => {
+    startOverlay.style.display = 'none';
+    addPhraseToDisplay(getRandomPhraseAsArray(phrases));   
+})
+
+function resetGame() {
+    missed = 0;
+    while (phraseUl.firstChild) {
+        phraseUl.removeChild(phraseUl.firstChild);
+    }
+    for (let i = 0; i < btns.length; i++) {
+        if (btns[i].className === 'chosen' && btns[i].disabled === true) {
+            btns[i].className = '';
+            btns[i].disabled = 'false';
+        }
+    }
+}
+
+function getRandomPhraseAsArray(arr) {
     const randomNumber = Math.floor(Math.random() * arr.length);
     let characters = [];
     const randomPhrase = arr[randomNumber];
@@ -37,8 +49,9 @@ function addPhraseToDisplay(arr) {
     for (let i = 0; i < arr.length; i++) {
         const character = arr[i];
         const listItem = document.createElement("li");
-        const phraseUl = document.querySelector("#phrase ul");
-        if (character !== ' ') {
+        if (character === ' ') {
+            listItem.className = "space";
+        } else {
             listItem.className = "letter";
         }
         listItem.innerHTML = character;
@@ -69,6 +82,7 @@ keyboard.addEventListener('click', (e) => {
         letterFound = checkLetter(btn);
         if (letterFound === null) {
             missed++;
+            console.log(missed);
             hearts[missed - 1].src = 'images/lostHeart.png'
         }
     }
@@ -97,9 +111,9 @@ function checkWin() {
     const show = document.getElementsByClassName('show');
     if (letter.length === show.length) {
         startOverlay.style.display = 'flex';
-        console.log("Win");
-    } else if (missed === 4) {
+        resetGame();
+    } else if (missed === 5) {
         startOverlay.style.display = 'flex';
-        console.log("Lost");
+        resetGame();
     }
 }
