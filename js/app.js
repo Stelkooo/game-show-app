@@ -33,6 +33,9 @@ function resetGame() {
             btns[i].disabled = 'false';
         }
     }
+    for (let i = 0; i < hearts.length; i++) {
+        hearts[i].src = 'images/liveHeart.png';
+    }
 }
 
 function getRandomPhraseAsArray(arr) {
@@ -83,7 +86,7 @@ keyboard.addEventListener('click', (e) => {
         if (letterFound === null) {
             missed++;
             console.log(missed);
-            hearts[missed - 1].src = 'images/lostHeart.png'
+            hearts[missed - 1].src = 'images/lostHeart.png';
         }
     }
     checkWin();
@@ -111,9 +114,11 @@ function checkWin() {
     const show = document.getElementsByClassName('show');
     if (letter.length === show.length) {
         startOverlay.style.display = 'flex';
+        startOverlay.className = 'win';
         resetGame();
     } else if (missed === 5) {
         startOverlay.style.display = 'flex';
+        startOverlay.className = 'lose';
         resetGame();
     }
 }
