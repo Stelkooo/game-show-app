@@ -50,7 +50,7 @@ function resetGame() {
     for (let i = 0; i < btns.length; i++) {
         if (btns[i].className === 'chosen' && btns[i].disabled === true) {
             btns[i].className = '';
-            btns[i].disabled = 'false';
+            btns[i].disabled = false;
         }
     }
     // Sets all the hearts back to the liveHeart.png image
