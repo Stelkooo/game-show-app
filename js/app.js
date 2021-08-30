@@ -1,16 +1,7 @@
 const keyboard = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
-const btns = document.querySelectorAll('.keyrow button');
-const hearts = document.querySelectorAll('.tries img');
 const startOverlay = document.getElementById('overlay');
-const phraseUl = document.querySelector("#phrase ul");
-const title = document.querySelector(".title");
-const p = document.createElement('p');
-title.insertAdjacentElement('afterend', p);
-let letterFound = '';
 let missed = 0;
-
-const startBtn = document.getElementsByClassName('btn__reset')[0];
 
 const phrases = [
     "Down To Earth",
@@ -20,16 +11,40 @@ const phrases = [
     "Jumping The Gun",
 ];
 
-let randomPhrase = getRandomPhraseAsArray(phrases);
+const randomPhrase = getRandomPhraseAsArray(phrases);
+
+const startBtn = document.getElementsByClassName('btn__reset')[0];
 
 startBtn.addEventListener('click', (e) => {
-    startOverlay.style.display = 'none';
-    addPhraseToDisplay(randomPhrase);   
+    const startBtnText = startBtn.innerHTML;
+    if (startBtnText === 'Start Game') {
+        addPhraseToDisplay(randomPhrase);
+        setOverlayDisplay('none');
+    } else if (startBtnText === 'Try Again' || startBtnText === 'Play Again') {
+        setOverlayDisplay('none');
+    }   
 })
+
+function getRandomPhraseAsArray(arr) {
+    const randomNumber = Math.floor(Math.random() * arr.length);
+    const randomPhrase = arr[randomNumber];
+    let characters = [];
+    for (let i = 0; i < randomPhrase.length; i++) {
+        characters.push(randomPhrase[i]);
+    }
+    return characters
+}
+
+const btns = document.querySelectorAll('.keyrow button');
+const hearts = document.querySelectorAll('.tries img');
+const phraseUl = document.querySelector("#phrase ul");
+const title = document.querySelector(".title");
+const p = document.createElement('p');
+title.insertAdjacentElement('afterend', p);
+let letterFound = '';
 
 function resetGame() {
     missed = 0;
-    randomPhrase = getRandomPhraseAsArray(phrases);
     while (phraseUl.firstChild) {
         phraseUl.removeChild(phraseUl.firstChild);
     }
@@ -42,16 +57,7 @@ function resetGame() {
     for (let i = 0; i < hearts.length; i++) {
         hearts[i].src = 'images/liveHeart.png';
     }
-}
-
-function getRandomPhraseAsArray(arr) {
-    const randomNumber = Math.floor(Math.random() * arr.length);
-    let characters = [];
-    const randomPhrase = arr[randomNumber];
-    for (let i = 0; i < randomPhrase.length; i++) {
-        characters.push(randomPhrase[i]);
-    }
-    return characters
+    addPhraseToDisplay(randomPhrase);
 }
 
 function addPhraseToDisplay(arr) {
@@ -120,15 +126,20 @@ function checkWin() {
     const show = document.getElementsByClassName('show');
     if (letter.length === show.length) {
         startBtn.innerHTML = 'Play Again';
-        startOverlay.style.display = 'flex';
+        setOverlayDisplay('flex');
         startOverlay.className = 'win';
         p.innerHTML = "Well done, you guessed the phrase correctly";
         resetGame();
     } else if (missed === 5) {
         startBtn.innerHTML = 'Try Again';
-        startOverlay.style.display = 'flex';
+        setOverlayDisplay('flex');
         startOverlay.className = 'lose';
         p.innerHTML = "Unlucky, you did not guess the phrase";
         resetGame();
     }
+}
+
+function setOverlayDisplay(value) {
+    const startOverlayStyle = startOverlay.style;
+    startOverlayStyle.display = value;
 }
